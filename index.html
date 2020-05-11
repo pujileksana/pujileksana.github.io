@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=email], select {
+  width: 49%;
+  font-size:15px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 20%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
+
+	
+</head>
+<body style="background:#000;">
+
+<center><h1 style="color:#fff" "font-size:10px">PENJUALAN BARANG</h1></center>
+
+<center><h1 style="color:#fff"><a href="https://docs.google.com/spreadsheets/d/1QzlIg-eW9EheJHCwjsZ7UCn0RcLfFBqMTXCLj3CvuJ0" target="_blank">Link Spreadsheet</a></h1></center>
+	
+<center><input type="button" value="Refresh" onClick="location.href=location.href"></center><br></br>
+
+<form id="form" target="_self" onsubmit="return postToGoogle();" action="" autocomplete="off"> 
+<input id="prodak" name="entry.41879173" placeholder="Nama prodak" type="text" required> 
+<input id="pembeli" name="entry.1742625945" placeholder="Nama pembeli" type="text" required> 
+<input id="hargajual" name="entry.1762574114" placeholder="Harga jual" type="text" required>
+<input id="hargabeli" name="entry.442474954" placeholder="Harga beli" type="text" required>
+	
+<center><input type="button" name="" value="PROSES" onclick="subtract(); copy();"</center>
+<input type="text" id="result" name="result">
+
+<input id="laba" name="entry.1332386383" type="text" disabled="disabled" required>
+<input id="jumlah" name="entry.1274893339" placeholder="Jumlah" type="text" required>
+<input id="supplier" name="entry.416578339" placeholder="Supplier" type="text" required>
+
+<select id="marketplace" name="entry.491877984" required>
+<option value="">Marketplace?</option>
+<option value="Tokopedia">Tokopedia</option>
+<option value="Bukalapak">Bukalapak</option>
+<option value="Shopee">Shopee</option>
+</select>
+
+<input id="rekvirtual" name="entry.2519983" placeholder="Rek Virtual" type="text">
+<input id="tanggal" name="entry.1964777458" placeholder="Tanggal" type="date" required>
+
+  
+<button id="send" type="submit" class="common_btn">Simpan</button> <br></br>
+
+
+</form>
+
+<h3 id="success-msg" style="text-align: center !important; margin-top:190px !important; display:none; color:#fff">Your Request has been posted to Google Spreadsheet </h3>
+
+<script>
+
+function postToGoogle() {
+                var field1 = $("#prodak").val();
+                var field2 = $("#pembeli").val();
+                var field3 = $("#hargajual").val();
+		var field4 = $("#hargabeli").val();
+		var field5 = $("#supplier").val();
+                var field6 = $("#jumlah").val();
+		var field7 = $("#tanggal").val();
+		var field8 = $("#marketplace option:selected").text();
+		var field9 = $("#laba").val();
+		var field10 = $("#rekvirtual").val();
+				
+				if(field1 == ""){
+			alert('Masukkan nama prodak');
+			document.getElementById("prodak").focus();
+					return false;
+				}
+				if(field2 == ""){
+					alert('Masukkan nama pembeli');
+					document.getElementById("pembeli").focus();
+					return false;
+				}
+				if(field3 == ""){
+					alert('Masukkan harga jual');
+					document.getElementById("hargajual").focus();
+					return false;
+				}
+				if(field4 == ""){
+					alert('Masukkan harga beli');
+					document.getElementById("hargabeli").focus();
+					return false;
+				}
+				if(field5 == ""){
+					alert('Masukkan supplier');
+					document.getElementById("jumlah").focus();
+					return false;
+				}
+				if(field6 == ""){
+					alert('Masukkan jumlah');
+					document.getElementById("supplier").focus();
+					return false;
+				}
+				if(field7 == ""){
+					alert('Masukkan tanggal');
+					document.getElementById("tanggal").focus();
+					return false;
+				}
+				if(field8 == "Marketplace?"){
+					alert('pilih marketplace');
+					document.getElementById("marketplace").focus();
+					return false;
+				}
+				
+                $.ajax({
+                    url: "https://docs.google.com/forms/d/1vj_GvDv2nQboTMTlqZhurZYK_ZJ8GLyKN7EiUM70O7I/formResponse?",
+
+data: {"entry.41879173": field1, "entry.1742625945": field2, "entry.1762574114": field3, "entry.442474954": field4, "entry.416578339": field5, "entry.1274893339": field6, "entry.1964777458": field7, "entry.491877984": field8,"entry.1332386383": field9,"entry.2519983": field10},
+                    type: "POST",
+                    dataType: "xml",
+                    success: function(d)
+					{
+					},
+					error: function(x, y, z)
+						{
+
+							$('#success-msg').show();
+							$('#form').hide();
+							
+						}
+                });
+				return false;
+            }
+
+
+   function subtract() {
+   hargajual=parseInt(form.hargajual.value);
+   hargabeli=parseInt(form.hargabeli.value);
+   result=hargajual-hargabeli;
+   form.result.value=result;
+   }
+
+// jQuery implementation
+
+function copy()
+{
+document.getElementById('laba').value = document.getElementById('result').value
+
+}
+  
+</script>
+
+
+</body>
+
+</html>
